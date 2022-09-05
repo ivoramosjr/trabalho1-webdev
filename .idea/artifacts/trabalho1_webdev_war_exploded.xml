@@ -1,23 +1,23 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="trabalho1:war exploded">
+  <artifact type="exploded-war" name="trabalho1-webdev:war exploded">
     <output-path>$PROJECT_DIR$/target/trabalho1-1.0-SNAPSHOT</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
-        <module>trabalho1</module>
+        <module>trabalho1-webdev</module>
         <packaging>war</packaging>
       </options>
     </properties>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="trabalho1" />
+          <element id="module-output" name="trabalho1-webdev" />
         </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/trabalho1-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="trabalho1/web/Web" />
+      <element id="javaee-facet-resources" facet="trabalho1-webdev/web/Web" />
     </root>
   </artifact>
 </component>

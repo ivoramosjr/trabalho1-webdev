@@ -1,14 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="trabalho1:war">
+  <artifact type="war" name="trabalho1-webdev:war">
     <output-path>$PROJECT_DIR$/target</output-path>
     <properties id="maven-jee-properties">
       <options>
-        <module>trabalho1</module>
+        <module>trabalho1-webdev</module>
         <packaging>war</packaging>
       </options>
     </properties>
     <root id="archive" name="trabalho1-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="trabalho1:war exploded" />
+      <element id="artifact" artifact-name="trabalho1-webdev:war exploded" />
     </root>
   </artifact>
 </component>

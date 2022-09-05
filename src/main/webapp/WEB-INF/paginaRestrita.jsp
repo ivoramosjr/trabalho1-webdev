@@ -1,4 +1,4 @@
-<jsp:useBean id="usuario" scope="request" type="br.com.senac.trabalho1.entity.Usuario"/>
+<jsp:useBean id="usuario" scope="request" type="java.lang.String"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,7 +9,7 @@
         <h1>Logado!</h1>
     </div>
     <div>
-        <h3>Bem vindo(a) a página restrita usuário: ${usuario.login}</h3>
+        <h3>Bem vindo(a) a página restrita usuário: ${usuario}</h3>
     </div>
 </body>
 </html>

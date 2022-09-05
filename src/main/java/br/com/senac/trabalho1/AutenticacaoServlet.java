@@ -37,7 +37,7 @@ public class AutenticacaoServlet extends HttpServlet {
         if(loginService.validarLogin(usuario)){
             System.out.println("Validado!");
 
-            request.setAttribute("usuario", usuario);
+            request.setAttribute("usuario", usuario.getLogin());
             RequestDispatcher rd= getServletContext().getRequestDispatcher("/WEB-INF/paginaRestrita.jsp");
             rd.forward(request, response);
 
