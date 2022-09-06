@@ -8,8 +8,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Enumeration;
+import java.util.*;
 
 @WebServlet(name = "AutenticacaoServlet", value = "/AutenticacaoServlet")
 public class AutenticacaoServlet extends HttpServlet {
@@ -20,7 +19,12 @@ public class AutenticacaoServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        System.out.println("Validando cookie auth");
+        Cookie[] cookies = request.getCookies();
+        //TODO finalizar
+        request.setAttribute("usuario","teste");
+        RequestDispatcher rd= getServletContext().getRequestDispatcher("/WEB-INF/paginaRestrita.jsp");
+        rd.forward(request, response);
     }
 
     @Override
@@ -36,8 +40,13 @@ public class AutenticacaoServlet extends HttpServlet {
 
         if(loginService.validarLogin(usuario)){
             System.out.println("Validado!");
-
             request.setAttribute("usuario", usuario.getLogin());
+
+            String manterLogado = request.getParameter("manter-login");
+
+            if(manterLogado != null)
+                response.addCookie(criaCookie(usuario));
+
             RequestDispatcher rd= getServletContext().getRequestDispatcher("/WEB-INF/paginaRestrita.jsp");
             rd.forward(request, response);
 
@@ -46,5 +55,11 @@ public class AutenticacaoServlet extends HttpServlet {
             RequestDispatcher rd= request.getRequestDispatcher("login.html");
             rd.forward(request, response);
         }
+    }
+
+    private Cookie criaCookie(Usuario usuario){
+        Cookie cookie = new Cookie("auth",usuario.getLogin()+"-"+usuario.getSenha());
+        cookie.setMaxAge(60);
+        return cookie;
     }
 }
