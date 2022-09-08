@@ -1,28 +1,31 @@
-package br.com.senac.trabalho1;
+package br.com.senac.trabalho1.servlet;
 
 import br.com.senac.trabalho1.entity.Usuario;
+import br.com.senac.trabalho1.security.Encriptador;
 import br.com.senac.trabalho1.service.LoginService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
 
 @WebServlet(name = "AutenticacaoServlet", value = "/AutenticacaoServlet")
 public class AutenticacaoServlet extends HttpServlet {
 
     LoginService loginService;
+    private static final String NOME_COOKIE = "auth";
+
+    private static final int TEMPO_COOKIE = 3600;
     public void init(){
         loginService = new LoginService();
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Validando cookie auth");
-        Cookie[] cookies = request.getCookies();
-        //TODO finalizar
-        request.setAttribute("usuario","teste");
+        System.out.println("Carregando usuário...");
+        Cookie cookie = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals(NOME_COOKIE)).findFirst().get();
+        Usuario usuario = Encriptador.desencriptaConteudo(cookie.getValue());
+        request.setAttribute("usuario", usuario.getLogin());
         RequestDispatcher rd= getServletContext().getRequestDispatcher("/WEB-INF/paginaRestrita.jsp");
         rd.forward(request, response);
     }
@@ -58,8 +61,8 @@ public class AutenticacaoServlet extends HttpServlet {
     }
 
     private Cookie criaCookie(Usuario usuario){
-        Cookie cookie = new Cookie("auth",usuario.getLogin()+"-"+usuario.getSenha());
-        cookie.setMaxAge(60);
+        Cookie cookie = new Cookie(NOME_COOKIE, Encriptador.encriptarConteudo(usuario));
+        cookie.setMaxAge(TEMPO_COOKIE);
         return cookie;
     }
 }
