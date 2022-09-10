@@ -19,7 +19,7 @@ public class AutenticacaoServlet extends HttpServlet {
     private static final int COOKIE_TIME = 300;
     private static final String LOGOUT_PATH = "logout";
     private static final String RESTRICT_PATH = "/WEB-INF/paginaRestrita.jsp";
-    private static final String LOGIN_PATH = "login.html";
+    private static final String LOGIN_PATH = "login.jsp";
     @Override
     public void init(){
         loginService = new LoginService();
@@ -89,8 +89,11 @@ public class AutenticacaoServlet extends HttpServlet {
 
             String manterLogado = request.getParameter("manter-login");
 
-            if(manterLogado != null)
+            if(manterLogado != null) {
                 response.addCookie(criaCookie(infos));
+            }else{
+                response.addCookie(destroiCookie());
+            }
 
             RequestDispatcher rd= getServletContext().getRequestDispatcher(RESTRICT_PATH);
             rd.forward(request, response);
@@ -105,6 +108,12 @@ public class AutenticacaoServlet extends HttpServlet {
     private Cookie criaCookie(String infos){
         Cookie cookie = new Cookie(COOKIE_NAME, infos);
         cookie.setMaxAge(COOKIE_TIME);
+        return cookie;
+    }
+
+    private Cookie destroiCookie(){
+        Cookie cookie = new Cookie(COOKIE_NAME, null);
+        cookie.setMaxAge(0);
         return cookie;
     }
 }

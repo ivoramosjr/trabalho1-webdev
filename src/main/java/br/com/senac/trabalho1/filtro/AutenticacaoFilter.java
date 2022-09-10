@@ -20,7 +20,7 @@ public class AutenticacaoFilter implements Filter {
 
     private static final String AUTH_PATH = "AutenticacaoServlet";
     private static final String RESTRICT_PATH = "/WEB-INF/paginaRestrita.jsp";
-    private static final String LOGIN_PATH = "login.html";
+    private static final String LOGIN_PATH = "login.jsp";
     private static final String METHOD_GET = "GET";
     private static final String COOKIE_NAME = "auth";
     private static final String LOGOUT_PATH = "/logout";

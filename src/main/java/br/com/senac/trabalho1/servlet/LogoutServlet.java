@@ -13,7 +13,7 @@ public class LogoutServlet extends HttpServlet {
 
     private static final String COOKIE_NAME = "auth";
 
-    private static final String LOGIN_PATH = "login.html";
+    private static final String LOGIN_PATH = "login.jsp";
 
     @Override
     public void init(){}
