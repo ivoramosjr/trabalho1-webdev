@@ -11,5 +11,8 @@
     <div>
         <h3>Bem vindo(a) a página restrita usuário: ${usuario}</h3>
     </div>
+    <div>
+        <a href="logout">Logout</a>
+    </div>
 </body>
 </html>

@@ -22,6 +22,8 @@ public class AutenticacaoFilter implements Filter {
     private final static String LOGIN_PATH = "login.html";
     private final static String METHOD_GET = "GET";
     private final static String COOKIE_NAME = "auth";
+    private final static String COOKIE_VALUE = "autenticado";
+    private final static String LOGOUT_PATH = "/logout";
 
     LoginService loginService;
 
@@ -45,17 +47,14 @@ public class AutenticacaoFilter implements Filter {
 
         Cookie[] cookies = httpReq.getCookies();
 
-        if(cookies != null && Arrays.stream(cookies).anyMatch(c -> c.getName().equals(COOKIE_NAME))){
-            System.out.println("Verificando o cookie...");
+        if(cookies != null && Arrays.stream(cookies).anyMatch(c -> c.getName().equals(COOKIE_NAME)
+                && !c.getValue().isEmpty() && c.getValue().equals(COOKIE_VALUE))
+                && !LOGOUT_PATH.equals(httpReq.getServletPath())){
 
-            Cookie cookie = Arrays.stream(cookies).filter(c -> c.getName().equals(COOKIE_NAME)).findFirst().get();
+            System.out.println("Possui cookie...");
 
-            if(cookieEhValido(cookie)){
-                request.getRequestDispatcher(AUTH_PATH).forward(request, response);
-            }else{
-                cookie.setMaxAge(0);
-                retornaPaginaPrincipal(httpRes);
-            }
+            request.getRequestDispatcher(AUTH_PATH).forward(request, response);
+
         }else{
             if(path.equals("/"+AUTH_PATH) && httpReq.getMethod().equals(METHOD_GET)){
                 retornaPaginaPrincipal(httpRes);
@@ -69,20 +68,5 @@ public class AutenticacaoFilter implements Filter {
     private void retornaPaginaPrincipal(HttpServletResponse httpRes) throws IOException {
         System.out.println("Tentando acessar a página restrita sem permissão...");
         httpRes.sendRedirect(LOGIN_PATH);
-    }
-
-    private boolean cookieEhValido(Cookie cookie){
-        String informacaoCookie = cookie.getValue();
-
-        if(!informacaoCookie.contains("-"))
-            return false;
-
-        try{
-            Encriptador.desencriptaConteudo(informacaoCookie);
-            return true;
-        }catch (Exception e){
-            System.out.println("Cookie falso...");
-            return false;
-        }
     }
 }
