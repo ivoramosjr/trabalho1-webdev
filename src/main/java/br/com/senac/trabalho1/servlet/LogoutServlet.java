@@ -13,8 +13,9 @@ public class LogoutServlet extends HttpServlet {
 
     private static final String COOKIE_NAME = "auth";
 
-    private final static String LOGIN_PATH = "login.html";
+    private static final String LOGIN_PATH = "login.html";
 
+    @Override
     public void init(){}
 
     @Override
@@ -25,13 +26,11 @@ public class LogoutServlet extends HttpServlet {
         if (cookies != null && Arrays.stream(cookies).anyMatch(c -> c.getName().equals(COOKIE_NAME))) {
             System.out.println("Verificando se possui o cookie...");
 
-            Cookie cookie = Arrays.stream(cookies).filter(c -> c.getName().equals(COOKIE_NAME)).findFirst().get();
-
-            cookie = new Cookie(COOKIE_NAME, null);
+            Cookie cookie = new Cookie(COOKIE_NAME, null);
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
-        request.getSession().setAttribute("infos",null);
+        request.getSession().invalidate();
         response.sendRedirect(LOGIN_PATH);
     }
 

@@ -48,4 +48,11 @@ public final class Encriptador {
         return usuario;
     }
 
+    public static boolean validaInfos(String infos){
+        return infos != null
+                && infos.contains("-")
+                && !Arrays.asList(infos.split("-")).isEmpty()
+                && infos.contains("%");
+    }
+
 }

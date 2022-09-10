@@ -18,12 +18,12 @@ import java.util.Optional;
 @WebFilter(filterName = "AutenticacaoFilter", urlPatterns = "/*")
 public class AutenticacaoFilter implements Filter {
 
-    private final static String AUTH_PATH = "AutenticacaoServlet";
-    private final static String LOGIN_PATH = "login.html";
-    private final static String METHOD_GET = "GET";
-    private final static String COOKIE_NAME = "auth";
-    private final static String COOKIE_VALUE = "autenticado";
-    private final static String LOGOUT_PATH = "/logout";
+    private static final String AUTH_PATH = "AutenticacaoServlet";
+    private static final String RESTRICT_PATH = "/WEB-INF/paginaRestrita.jsp";
+    private static final String LOGIN_PATH = "login.html";
+    private static final String METHOD_GET = "GET";
+    private static final String COOKIE_NAME = "auth";
+    private static final String LOGOUT_PATH = "/logout";
 
     LoginService loginService;
 
@@ -48,15 +48,14 @@ public class AutenticacaoFilter implements Filter {
         Cookie[] cookies = httpReq.getCookies();
 
         if(cookies != null && Arrays.stream(cookies).anyMatch(c -> c.getName().equals(COOKIE_NAME)
-                && !c.getValue().isEmpty() && c.getValue().equals(COOKIE_VALUE))
-                && !LOGOUT_PATH.equals(httpReq.getServletPath())){
+                && !c.getValue().isEmpty()) && !LOGOUT_PATH.equals(httpReq.getServletPath())){
 
             System.out.println("Possui cookie...");
 
             request.getRequestDispatcher(AUTH_PATH).forward(request, response);
 
         }else{
-            if(path.equals("/"+AUTH_PATH) && httpReq.getMethod().equals(METHOD_GET)){
+            if((path.equals("/"+AUTH_PATH) || path.equals(RESTRICT_PATH)) && httpReq.getMethod().equals(METHOD_GET)){
                 retornaPaginaPrincipal(httpRes);
             }else{
                 chain.doFilter(request, response);
